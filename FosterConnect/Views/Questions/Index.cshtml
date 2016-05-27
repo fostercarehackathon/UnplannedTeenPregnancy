@@ -1,0 +1,114 @@
+﻿@model FosterConnect.Models.Questions.IndexModel
+
+@{
+    ViewBag.Title = "Ask a Question";
+}
+
+@section scripts {
+    <script type="text/javascript">
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12
+            });
+
+            var marker = new google.maps.Marker({
+                map: map,
+                title: "You are here!"
+            });
+
+            $("select[name='currentState']").change(function () {
+                FosterConnect.getCoordsForAddress($(this).val(), function(location) {
+                    map.setCenter(location);
+                    map.setZoom(6);
+                    marker.setPosition(location);
+                });    
+            });
+
+            FosterConnect.getCoords(function (coords) {
+                FosterConnect.getState(coords.lat, coords.lng, function (state) {
+                    $("select[name='currentState']").val(state.abbreviation);
+
+                    map.setCenter(coords);
+                    marker.setPosition(coords);
+                });
+            });
+        }
+    </script>
+}
+
+<div class="heading mb20">
+    <h2>@ViewBag.Title</h2>
+</div>
+
+<div class="cta mb20">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4" style="padding-bottom: 1em;">
+                <h3>Your location:</h3>
+                @Html.DropDownList("currentState", new SelectList(Model.States, "Abbreviation", "Name"), new {@class = "form-control form-control-lg"})
+            </div>
+            <div class="col-md-5 col-md-offset-1">
+                <div id="map" style="height: 150px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+
+    <div class="row padded">
+        <h4>
+            You can ask a question anonymously and somebody will respond to you. We are here to help.
+        </h4>
+        <textarea style="width: 100%; height: 150px;" id="question"></textarea>
+        <div class="progress" style="display: none;">
+            <div class="progress-bar progress-bar-striped active" role="progressbar"
+                 aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                please wait for an answer...
+            </div>
+        </div>
+    </div>
+    <div class="row padded">
+        <input type="button" value="Ask" id="ask" class="button button-primary"/>
+    </div>
+    <br/>
+    <div class="row padded">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <span class="badge">12</span>
+                <h3 class="no-margin-top">Question 1</h3>
+                <p>Answer 1</p>
+            </li>
+            <li class="list-group-item">
+                <span class="badge">7</span>
+                <h3 class="no-margin-top">Question 2</h3>
+                <p>Answer 2</p>
+            </li>
+            <li class="list-group-item">
+                <span class="badge">3</span>
+                <h3 class="no-margin-top">Question 3</h3>
+                <p>Answer 3</p>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        $('#ask').click(function () {
+            $('.progress').show();
+            $('#question').css('background-color', 'gray');
+            setTimeout(function () {
+                $('.progress').hide();
+                $('#ask').hide();
+                
+                var answer =
+                    '<b>Answer provided by Shirley White from ActionResponse:</b>  You are not alone, you have many people who ' +
+                        'are available to help at several centers around your area.  A great option is Washington DC birth center services directly at: (555)555-1212';
+                $('#question').css('background-color', 'white');
+
+                $('#question').hide();
+                $('.list-group').prepend('<li class="list-group-item"><span class="badge"></span><h3 class="no-margin-top">' + $('#question').val() + '</h3><p>' + answer + '</p></li>');
+            }, 3000);
+        });
+    });
+</script>

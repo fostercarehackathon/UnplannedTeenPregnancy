@@ -1,0 +1,49 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+div.row-alt-color {
+    background-color: #CDCDCD;
+}
+
+div.padded {
+    padding: 1em;
+}
+
+.no-margin-top {
+    margin-top: 0;
+}
+
+div.important {
+    padding: 1.5em;
+    border: 2px dotted red;
+}
+
+div.important > p {
+    color: red;
+}
+
+div.important > ul {
+    margin: 0;
+}
+
+.hotline-list {
+    margin-top: 1em;
+}
+.hotline-description {
+    font-size: smaller;
+    font-style: italic;
+    margin-bottom: 2.5em;
+}
+.hotline-list-description {
+    margin: 2em 0;
+}

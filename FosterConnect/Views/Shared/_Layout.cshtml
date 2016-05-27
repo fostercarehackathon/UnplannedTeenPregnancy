@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - FosterConnect</title>
+        @Styles.Render("~/bundles/css")
+        @Scripts.Render("~/bundles/js")
+    </head>
+    <body class="royal_preloader scrollreveal">
+        <div id="royal_preloader"></div>
+
+        <div id="bg-boxed">
+            <div class="boxed">
+                <header>
+                    <div class="top-bar">
+                    </div>
+                    <div class="navbar-wrapper">
+                        <div id="fixed-navbar" class="navbar navbar-main">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-12 column-header">
+                                        <div class="navbar-header">
+                                            <a class="navbar-brand" href="/">FosterConnect</a>
+                                            <!-- Mobile Navigation -->
+                                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse">
+                                                <span class="sr-only">Toggle navigation</span>
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                            </button>
+                                        </div>
+                                        <nav class="navbar-collapse collapse navHeaderCollapse" role="navigation">
+                                            <ul class="nav navbar-nav navbar-right">
+                                                <li>@Html.ActionLink("Find Resources", "Index", "Resources")</li>
+                                                <li>@Html.ActionLink("Find Hotlines", "Index", "Hotlines")</li>
+                                                <li>@Html.ActionLink("Reminders", "Index", "Reminders")</li>
+                                                <li>@Html.ActionLink("Ask A Question", "Index", "Questions")</li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-12">
+                                    <h1>@* TODO *@</h1>
+                                </div>
+                                <div class="col-sm-6">
+                                    <ol class="breadcrumb">
+                                        <li>
+                                            <span class="fa fa-home"></span>
+                                            <a href="/">Home</a>
+                                        </li>
+                                        <li>@ViewBag.Title</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <section class="mt40 mb40">
+                    <div class="container">
+                        @RenderBody()
+                    </div>
+                </section>
+
+                <footer class="footer-light">
+                    <div class="container">
+                       
+                        <div class="row">
+
+                            <div class="col-sm-1 col-xs-2">
+                                @Html.ActionLink("About", "AboutUs", "Home")
+                            </div>
+                            <div class="col-sm-11 col-xs-10">
+                                <p class="copyright">
+                                    &copy; @DateTime.UtcNow.Year - FosterConnect
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        @RenderSection("scripts", required: false)
+        <script src="/Scripts/raleway/skrollr.min.js"></script>
+        <script src="/Scripts/raleway/main.js"></script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBB4B_T6BQXrhEW06-0GGJSA1pjJI5Sw6g&callback=FosterConnect.initializeMap">
+        </script>
+        <script>
+            var config = {
+                easing: 'hustle',
+                mobile: true,
+                delay: 'onload'
+            };
+		    window.sr = new scrollReveal( config );
+        </script>
+    </body>
+</html>

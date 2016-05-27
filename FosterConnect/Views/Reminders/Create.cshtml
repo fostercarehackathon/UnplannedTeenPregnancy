@@ -1,0 +1,133 @@
+﻿@using FosterConnect.Models
+@model FosterConnect.Models.ReminderViewModel
+
+@{
+    ViewBag.Title = "Create Reminder";
+}
+
+<div class="heading mb20">
+    <h2>@ViewBag.Title</h2>
+</div>
+<div class="row padded">
+    <div class="col-md-6">
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Reminder, "What type of Reminder you would like to create?")
+                @Html.DropDownListFor(m => m.Reminder, new SelectList(Model.ReminderTypesDictionary, "Value", "Key"), new {@class = "form-control"})
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, "Where would you like us to send the reminder text or email?")
+                @Html.TextBoxFor(model => model.Email, new {@class = "form-control"})
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.AppointmentDateTime, "When would you like to set the appointment?")
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.TextBoxFor(model => model.AppointmentDateTime, new {@class = "form-control"})
+                    <span class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ShouldRepeat, "Repeat") &nbsp;&nbsp;
+                @Html.CheckBoxFor(model => model.ShouldRepeat)
+            </div>
+
+            <div id="ShowFrequency" style="display: none">
+                <label>Every</label>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.Amount, new {@class = "form-control col-xs-2", style = "display: inline; width: 10%; margin-right: 10px;"})
+                    @Html.DropDownListFor(m => m.Frequency, EnumHelper.GetSelectList(typeof (ReminderViewModel.FrequencyType)), new {@class = "form-control", style = "display: inline; width: 20%" })
+                </div>
+            </div>
+
+            <div id="RepeatsOn" style="display: none">
+                <label>Repeats on</label>
+                <div class="form-group">
+                    @*Temp stuff*@
+                    <input type="checkbox"> S &nbsp;&nbsp;
+                    <input type="checkbox"> M &nbsp;&nbsp;
+                    <input type="checkbox"> T &nbsp;&nbsp;
+                    <input type="checkbox"> W &nbsp;&nbsp;
+                    <input type="checkbox"> T &nbsp;&nbsp;
+                    <input type="checkbox"> F &nbsp;&nbsp;
+                    <input type="checkbox"> S
+                </div>
+            </div>
+
+            <div id="RepeatsBy" style="display: none">
+                <label>Repeats by</label>
+                <div class="form-group">
+                    @*Temp stuff*@
+                    <input type="radio" name="repeats" checked> day of the month &nbsp;&nbsp;
+                    <input type="radio" name="repeats"> day of the week
+                </div>
+            </div>
+
+            <div id="ShowFrequencyEnd" style="display: none">
+                <label>Ends</label>
+                <div class="form-group">
+                    @Html.RadioButtonFor(m => m.FrequencyEnd, ReminderViewModel.FrequencyEndType.Never) Never <br/>
+                    @Html.RadioButtonFor(m => m.FrequencyEnd, ReminderViewModel.FrequencyEndType.After) After&nbsp;&nbsp;
+                    @Html.TextBoxFor(model => model.FrequencyEndsAfter, new { style = "width: 10%" })&nbsp;&nbsp;<label>&nbsp;occurences</label><br/>
+                    @Html.RadioButtonFor(m => m.FrequencyEnd, ReminderViewModel.FrequencyEndType.On) On
+                    <div class='input-group date' id='datetimepicker2'>
+                        @Html.TextBoxFor(model => model.FrequencyEndsOnDateTime, new {@class = "form-control"})
+                        <span class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Notes, "Add Notes")
+                @Html.TextAreaFor(model => model.Notes, new {@class = "form-control"})
+            </div>
+            <input type="submit" class="btn btn-primary" value="Create Reminder"/>
+        }
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+        $(document).ready(function() {
+            $('#datetimepicker1').datetimepicker();
+            $('#datetimepicker2').datetimepicker();
+
+            $('#ShouldRepeat').on("change", function () {
+                if ($(this).is(':checked')) {
+                    $('#ShowFrequency').show();
+                    $('#ShowFrequencyEnd').show();
+                } else {
+                    $('#ShowFrequency').hide();
+                    $('#ShowFrequencyEnd').hide();
+                }
+            });
+
+            $('#Frequency').on("change", function () {
+                switch($("#Frequency option:selected").text()) {
+                    case "Days":
+                        $('#RepeatsOn').hide();
+                        $('#RepeatsBy').hide();
+                        break;
+                    case "Weeks":
+                        $('#RepeatsOn').show();
+                        $('#RepeatsBy').hide();
+                        break;
+                    case "Months":
+                        $('#RepeatsOn').hide();
+                        $('#RepeatsBy').show();
+                        break;
+                    case "Years":
+                        $('#RepeatsOn').hide();
+                        $('#RepeatsBy').hide();
+                        break;
+                } 
+            });
+        });
+    </script>
+}

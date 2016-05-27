@@ -1,0 +1,101 @@
+﻿@model List<FosterConnect.Models.Resources.Location>
+@{
+    ViewBag.Title = "Find Resources";
+}
+
+@section scripts {
+    <script type="text/javascript">
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12
+            });
+
+            var marker = new google.maps.Marker({
+                map: map,
+                title: "You are here!"
+            });
+
+            $("#addressForm").submit(function() {
+                FosterConnect.getCoordsForAddress($("#address").val(), function(location) {
+                    map.setCenter(location);
+                    map.setZoom(6);
+                    marker.setPosition(location);
+                });
+
+                return false;
+            });
+
+            FosterConnect.getCoords(function (coords) {
+                FosterConnect.getState(coords.lat, coords.lng, function (state) {
+                    $("#address").val(state.name);
+
+                    map.setCenter(coords);
+                    marker.setPosition(coords);
+                });
+            });
+
+            @foreach (var location in Model)
+            {
+                <text>
+                var myLatLng = { lat: @location.lat, lng: @location.lon };
+                var marker = new google.maps.Marker(
+                {
+                    position: myLatLng,
+                    map: map,
+                    title: '@location.name'
+                });
+
+                </text>
+            }
+        }
+    </script>
+}
+
+<div class="heading mb20">
+    <h2>@ViewBag.Title</h2>
+</div>
+
+<div class="cta mb20">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <form id="addressForm" class="form-inline">
+                    <div class="form-group">
+                        <h3>Your location:</h3>
+                        @*<label for="address">Address</label>*@
+                        <input type="text" class="form-control" id="address" placeholder="Your address" />
+                        <button type="submit" class="btn btn-primary">Go</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="map" style="height: 500px;"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mt20">
+            @foreach (var location in Model)
+            {
+                if (location.Id > 1)
+                {
+                    <hr />
+                }
+
+                    <p>
+                        <span class="heavy">@location.name</span>
+                    </p>
+                    <p>
+                        @location.address
+                    </p>
+                    <p>
+                        @location.phone
+                    </p>
+            }
+        </div>
+    </div>
+</div>

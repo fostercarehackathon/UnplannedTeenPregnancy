@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Reminders";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<div class="heading mb20">
+    <h2>@ViewBag.Title</h2>
+</div>
+
+<div class="cta mb20">
+    <p class="heavy mb20">Take some stress out of your life. Set up a reminder and we'll let you know when it's time to take your pill, visit your doctor, meet with your support group, and so on. You get the idea. :)</p>
+    <p>
+        @Html.ActionLink("Create your reminder", "create", null, new { @class = "btn btn-primary" })
+    </p>
+</div>
